@@ -2,18 +2,23 @@
 import { Effects, OrbitControls } from '@react-three/drei'
 import { Canvas, extend, useFrame } from '@react-three/fiber'
 import { useEffect, useMemo, useRef } from 'react'
-import { UnrealBloomPass } from 'three-stdlib'
+import { AfterimagePass, UnrealBloomPass } from 'three-stdlib'
 import * as THREE from 'three'
 
-extend({ UnrealBloomPass })
+extend({ AfterimagePass, UnrealBloomPass })
 
 function ParticleSwarm() {
   const meshRef = useRef<THREE.InstancedMesh>(null)
-  const count = 20000
+  const count = 15000
   const speedMult = 1
   const dummy = useMemo(() => new THREE.Object3D(), [])
   const target = useMemo(() => new THREE.Vector3(), [])
   const pColor = useMemo(() => new THREE.Color(), [])
+  const blendColor = useMemo(() => new THREE.Color(), [])
+  const emberColor = useMemo(() => new THREE.Color('#ff4b3e'), [])
+  const goldColor = useMemo(() => new THREE.Color('#f9c47b'), [])
+  const creamColor = useMemo(() => new THREE.Color('#f8efe8'), [])
+  const cinderColor = useMemo(() => new THREE.Color('#241511'), [])
   const color = pColor
 
   const positions = useMemo(() => {
@@ -33,10 +38,16 @@ function ParticleSwarm() {
   }, [count])
 
   const material = useMemo(
-    () => new THREE.MeshBasicMaterial({ color: 0xffffff }),
+    () =>
+      new THREE.MeshBasicMaterial({
+        color: 0xffffff,
+        toneMapped: false,
+        transparent: true,
+        opacity: 0.78,
+      }),
     [],
   )
-  const geometry = useMemo(() => new THREE.TetrahedronGeometry(0.25), [])
+  const geometry = useMemo(() => new THREE.TetrahedronGeometry(0.22), [])
 
   const PARAMS = useMemo(
     () => ({ warp: 0, horizon: 50, disk: 500, chaos: 0 }),
@@ -142,16 +153,29 @@ function ParticleSwarm() {
         0.0,
         Math.min(1.0, (rDisk - horizon) / disk),
       )
-      const hue = 0.03 + distRatio * 0.65
-      const sat = 0.8 + proximity * 0.2
+      const rimHeat = Math.pow(1.0 - distRatio, 2.15)
+      const jetFlare = jetMask * Math.pow(1.0 - phase, 1.12)
+      const emberGoldMix = THREE.MathUtils.clamp(
+        0.18 + proximity * 0.46 + distRatio * 0.18,
+        0,
+        1,
+      )
+      const flicker = 0.9 + 0.1 * Math.sin(time * 18.0 + i * 53.0)
+      const brightness =
+        0.3 +
+        rimHeat * 0.44 +
+        jetFlare * 0.22 +
+        proximity * 0.08
 
-      let lit = Math.pow(1.0 - distRatio, 3.0) * 0.85 + 0.05
-      lit += jetMask * (1.0 - phase) * 0.9
-      lit *= 0.8 + 0.2 * Math.sin(time * 30.0 + i * 137.0)
+      color.copy(cinderColor)
+      color.lerp(emberColor, 0.35 + rimHeat * 0.28)
+      blendColor.lerpColors(emberColor, goldColor, emberGoldMix)
+      color.lerp(blendColor, 0.52)
+      color.lerp(creamColor, rimHeat * 0.12 + jetFlare * 0.28)
+      color.lerp(cinderColor, distRatio * 0.22)
+      color.multiplyScalar(brightness * flicker)
 
-      color.setHSL((hue + 1.0) % 1.0, sat, Math.min(1.0, lit))
-
-      positions[i].lerp(target, 0.1)
+      positions[i].lerp(target, 0.085)
       dummy.position.copy(positions[i])
       dummy.updateMatrix()
       meshRef.current.setMatrixAt(i, dummy.matrix)
@@ -180,7 +204,7 @@ export function PlasmaCanvas() {
   return (
     <div className="plasma-canvas" aria-hidden="true">
       <Canvas camera={{ position: cameraPosition, fov: 60 }}>
-        <fog attach="fog" args={['#000000', 0.01]} />
+        <fog attach="fog" args={['#050505', 0.01]} />
         <ParticleSwarm />
         <OrbitControls
           autoRotate
@@ -191,11 +215,12 @@ export function PlasmaCanvas() {
           target={[0, 0, 0]}
         />
         <Effects disableGamma>
+          <afterimagePass args={[0.88]} />
           <unrealBloomPass
-            args={[bloomResolution, 1.8, 0.4, 0]}
-            radius={0.4}
-            strength={1.8}
-            threshold={0}
+            args={[bloomResolution, 1.55, 0.52, 0.02]}
+            radius={0.52}
+            strength={1.55}
+            threshold={0.02}
           />
         </Effects>
       </Canvas>
