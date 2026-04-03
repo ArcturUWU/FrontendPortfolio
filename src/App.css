@@ -39,19 +39,6 @@
   display: flex;
   flex-direction: column;
   gap: 0.1rem;
-  text-transform: uppercase;
-}
-
-.topbar__brand span:first-child {
-  font-size: 0.82rem;
-  letter-spacing: 0.34rem;
-  color: var(--accent-gold);
-}
-
-.topbar__brand span:last-child {
-  font-size: 0.74rem;
-  letter-spacing: 0.22rem;
-  color: var(--text-dim);
 }
 
 .topbar__nav {
@@ -92,12 +79,13 @@
   grid-template-columns: minmax(0, 1.15fr) minmax(320px, 0.85fr);
   gap: 1.6rem;
   align-items: stretch;
-  min-height: calc(100vh - 8rem);
-  padding: 2rem 0 5rem;
+  min-height: clamp(500px, 68vh, 620px);
+  padding: 1.1rem 0 2rem;
 }
 
 .hero__copy,
 .hero__panel,
+.section-heading,
 .manifest-card,
 .project-card,
 .system-section__panel,
@@ -112,11 +100,12 @@
 
 .hero__copy {
   position: relative;
+  container-type: inline-size;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  gap: 1.4rem;
-  padding: clamp(1.8rem, 4vw, 3rem);
+  justify-content: flex-start;
+  gap: 0.82rem;
+  padding: clamp(1.2rem, 2.8vw, 2.1rem);
   border-radius: var(--radius-xl);
   overflow: clip;
 }
@@ -134,18 +123,21 @@
 
 .hero__status {
   display: flex;
-  flex-wrap: wrap;
-  gap: 0.7rem;
+  flex-wrap: nowrap;
+  gap: 0.55rem;
 }
 
 .hero__status span {
   border-radius: 999px;
-  padding: 0.48rem 0.82rem;
+  padding: 0.38rem 0.68rem;
   border: 1px solid rgba(255, 255, 255, 0.12);
   background: rgba(255, 255, 255, 0.04);
-  font-size: 0.8rem;
-  letter-spacing: 0.14rem;
-  text-transform: uppercase;
+}
+
+.hero__status .type-status {
+  font-size: 0.72rem;
+  letter-spacing: 0.08rem;
+  white-space: nowrap;
 }
 
 .hero__status span[data-tone='ready'] {
@@ -160,45 +152,54 @@
   color: var(--danger);
 }
 
-.hero__eyebrow,
-.section-heading__eyebrow,
-.profile-card__eyebrow,
-.repo-dialog__eyebrow {
-  font-size: 0.82rem;
-  letter-spacing: 0.28rem;
-  text-transform: uppercase;
-  color: var(--accent-gold);
+.hero__lead {
+  display: grid;
+  gap: 0.7rem;
+  inline-size: min(100%, 28rem);
 }
 
-.hero h1,
-.section-heading h2,
-.system-section h2,
-.repo-dialog h2 {
-  font-family: var(--heading);
-  font-weight: 700;
-  line-height: 0.94;
-  letter-spacing: -0.08em;
+.hero__text {
+  display: grid;
+  gap: 0.5rem;
+  inline-size: 100%;
 }
 
-.hero h1 {
-  max-width: 14ch;
-  font-size: clamp(3.4rem, 8vw, 7rem);
+.hero__title {
+  --type-title-size: clamp(1.12rem, 3.6cqi, 1.9rem);
+  --type-title-line: 1.08;
+  --type-title-track: -0.02em;
+  --type-title-max: 100%;
+  --type-title-wrap: pretty;
 }
 
-.hero__lede,
-.section-heading__text,
-.profile-card__identity p,
-.system-section__copy p,
-.manifest-card p:last-child,
-.repo-dialog__summary,
-.repo-dialog__headline {
-  color: var(--text-muted);
+/* Legacy/new markup safety: keep hero heading inside the visible card area */
+.hero__copy h1 {
+  display: block;
+  inline-size: 100%;
+  max-inline-size: 100%;
+  min-inline-size: 0;
+  line-height: 1.08;
+  letter-spacing: -0.02em;
+  overflow-wrap: anywhere;
+  text-wrap: pretty;
+  hyphens: auto;
+}
+
+.hero__lede {
+  --type-body-size: 1.08rem;
+  --type-body-line: 1.5;
+  --type-body-max: 33ch;
+  --type-body-color: rgba(248, 239, 232, 0.92);
 }
 
 .hero__actions {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.9rem;
+  gap: 0.7rem;
+  margin-top: 1.2rem;
+  inline-size: 90%;
+  max-inline-size: 100%;
+  align-self: flex-start;
 }
 
 .hero__cta {
@@ -208,7 +209,7 @@
   padding: 0.92rem 1.34rem;
   border-radius: 999px;
   text-transform: uppercase;
-  letter-spacing: 0.16rem;
+  letter-spacing: 0.1rem;
   transition:
     transform 180ms ease,
     border-color 180ms ease,
@@ -228,23 +229,29 @@
 .hero__cta--ghost {
   border: 1px solid rgba(255, 255, 255, 0.18);
   background: rgba(255, 255, 255, 0.04);
+  flex: 1 1 auto;
+  min-inline-size: 0;
 }
 
 .hero__ticker {
+  inline-size: 90%;
+  max-inline-size: 100%;
+  align-self: flex-start;
   overflow: hidden;
   border-radius: 999px;
   border: 1px solid rgba(255, 255, 255, 0.12);
   background: rgba(255, 255, 255, 0.04);
+  margin-top: 1.25rem;
 }
 
 .hero__ticker-track {
   display: flex;
   width: max-content;
   gap: 1.8rem;
-  padding: 0.92rem 1.2rem;
+  padding: 0.76rem 1rem;
   animation: ticker 22s linear infinite;
   text-transform: uppercase;
-  letter-spacing: 0.16rem;
+  letter-spacing: 0.1rem;
   color: var(--text-dim);
 }
 
@@ -256,20 +263,30 @@
 
 .hero__panel {
   display: grid;
-  gap: 1rem;
-  padding: 1rem;
+  align-self: stretch;
+  align-content: stretch;
+  grid-template-rows: minmax(0, 1.5fr) minmax(0, 1fr);
+  gap: 0.38rem;
+  padding: 0.5rem;
   border-radius: var(--radius-xl);
 }
 
 .profile-card {
   display: grid;
+  grid-template-areas:
+    'avatar headline'
+    'bio bio';
+  align-self: stretch;
   grid-template-columns: auto 1fr;
-  gap: 1rem;
-  padding: 1rem;
+  column-gap: 0.5rem;
+  row-gap: 0.34rem;
+  align-content: start;
+  padding: 0.54rem;
   border-radius: var(--radius-lg);
 }
 
 .profile-card__avatar-wrap {
+  grid-area: avatar;
   position: relative;
   width: 124px;
   aspect-ratio: 1;
@@ -294,42 +311,61 @@
   border-radius: 28px;
 }
 
-.profile-card__identity {
-  display: flex;
-  flex-direction: column;
-  gap: 0.55rem;
+.profile-card__headline {
+  grid-area: headline;
+  display: grid;
+  gap: 0.42rem;
+  justify-items: center;
+  text-align: center;
+  align-content: start;
 }
 
-.profile-card__identity h2 {
-  font-size: clamp(2rem, 4vw, 3.2rem);
+.profile-card__bio {
+  grid-area: bio;
+  margin-top: 0.24rem;
+  --type-body-size: 1.06rem;
+  --type-body-line: 1.46;
+  --type-body-max: none;
+  max-inline-size: none;
+  text-align: left;
 }
 
 .metrics-grid {
   display: grid;
+  align-self: stretch;
+  align-content: stretch;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 1rem;
+  grid-template-rows: 1fr;
+  gap: 0.34rem;
+  min-height: 0;
 }
 
 .metric-card {
   display: flex;
   flex-direction: column;
-  gap: 0.45rem;
-  min-height: 132px;
-  padding: 1.1rem;
+  gap: 0.2rem;
+  align-self: stretch;
+  height: 100%;
+  min-height: 0;
+  padding: 0.52rem;
   border-radius: var(--radius-lg);
 }
 
-.metric-card span {
-  font-size: 0.8rem;
-  letter-spacing: 0.16rem;
-  text-transform: uppercase;
-  color: var(--text-dim);
+.metric-card--date {
+  min-height: 0;
 }
 
-.metric-card strong {
-  font-family: var(--heading);
-  font-size: clamp(2rem, 4vw, 2.9rem);
-  line-height: 1;
+.type-metric--date {
+  display: grid;
+  gap: 0.08em;
+  font-size: clamp(1.55rem, 2.4vw, 2.15rem);
+  line-height: 1.06;
+  letter-spacing: -0.015em;
+  text-wrap: pretty;
+}
+
+.type-metric--date span {
+  display: block;
 }
 
 .manifest {
@@ -348,36 +384,40 @@
   border-radius: var(--radius-lg);
 }
 
-.manifest-card p:first-child {
-  color: var(--accent-red);
-  text-transform: uppercase;
-  letter-spacing: 0.18rem;
-}
-
-.manifest-card h3 {
-  font-family: var(--heading);
-  font-size: 2rem;
-  line-height: 1;
-  letter-spacing: -0.06em;
-}
-
 .section-heading,
 .system-section {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(280px, 0.7fr);
   gap: 1.2rem;
   align-items: start;
   margin-bottom: 1.5rem;
 }
 
-.section-heading h2,
-.system-section h2 {
-  font-size: clamp(2.4rem, 5vw, 4.1rem);
+.system-section {
+  grid-template-columns: minmax(0, 1fr) minmax(280px, 0.7fr);
 }
 
-.section-heading__text {
-  max-width: 32ch;
-  padding-top: 2rem;
+.section-heading {
+  grid-template-columns: minmax(0, 1fr);
+  border-radius: var(--radius-xl);
+  padding: clamp(1.3rem, 2.6vw, 2.1rem);
+  --section-copy-size: clamp(1.45rem, 2.2vw, 1.9rem);
+  --type-title-size: var(--section-copy-size);
+  --type-title-line: 1.04;
+  --type-title-track: -0.02em;
+}
+
+.section-heading__copy,
+.system-section__copy {
+  display: grid;
+  gap: 0.65rem;
+}
+
+.system-section__answer {
+  padding: 0.9rem 1rem;
+  border-radius: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(8, 8, 12, 0.6);
+  backdrop-filter: blur(8px);
 }
 
 .projects-grid {
@@ -461,8 +501,7 @@
 .project-card__meta,
 .project-card__files,
 .project-card__stack,
-.repo-dialog__chips,
-.repo-dialog__metrics {
+.repo-dialog__chips {
   display: flex;
   flex-wrap: wrap;
   gap: 0.55rem;
@@ -470,30 +509,10 @@
 
 .project-card__meta {
   justify-content: space-between;
-  text-transform: uppercase;
-  letter-spacing: 0.14rem;
-  font-size: 0.78rem;
-  color: rgba(248, 239, 232, 0.84);
 }
 
 .project-card__name {
   margin-bottom: 0.35rem;
-  color: var(--project-accent, var(--accent-gold));
-  text-transform: uppercase;
-  letter-spacing: 0.18rem;
-  font-size: 0.82rem;
-}
-
-.project-card__headline h3 {
-  font-family: var(--heading);
-  font-size: clamp(2rem, 4vw, 3rem);
-  line-height: 0.96;
-  letter-spacing: -0.07em;
-}
-
-.project-card__summary {
-  max-width: 44ch;
-  color: rgba(248, 239, 232, 0.82);
 }
 
 .project-card__highlights {
@@ -554,7 +573,7 @@
   border: 1px solid rgba(255, 255, 255, 0.16);
   background: rgba(255, 255, 255, 0.06);
   text-transform: uppercase;
-  letter-spacing: 0.14rem;
+  letter-spacing: 0.1rem;
   transition:
     transform 180ms ease,
     background-color 180ms ease;
@@ -568,10 +587,6 @@
 .repo-dialog__links a:focus-visible {
   transform: translateY(-2px);
   background: rgba(255, 255, 255, 0.12);
-}
-
-.system-section__copy p {
-  max-width: 42ch;
 }
 
 .system-section__panel {
@@ -592,14 +607,9 @@
   background: rgba(255, 255, 255, 0.04);
 }
 
-.system-section__list span,
+.system-section__list .type-label,
 .repo-dialog__label {
-  display: inline-block;
   margin-bottom: 0.45rem;
-  color: var(--accent-red);
-  font-size: 0.8rem;
-  letter-spacing: 0.18rem;
-  text-transform: uppercase;
 }
 
 .stack-cloud {
@@ -654,7 +664,7 @@
   border-radius: 999px;
   border: 1px solid rgba(255, 255, 255, 0.12);
   background: rgba(7, 7, 10, 0.74);
-  letter-spacing: 0.18rem;
+  letter-spacing: 0.12rem;
   text-transform: uppercase;
 }
 
@@ -702,8 +712,11 @@
   border-radius: 24px;
 }
 
-.repo-dialog__block--metrics {
+.repo-dialog__meta-row {
   grid-column: span 2;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
 }
 
 .repo-dialog__list {
@@ -711,30 +724,16 @@
   gap: 0.45rem;
 }
 
-.repo-dialog__metrics {
+.repo-dialog__block--updated {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  align-content: start;
+  gap: 0.3rem;
 }
 
-.repo-dialog__metrics div {
-  display: grid;
-  gap: 0.2rem;
-  padding: 0.8rem;
-  border-radius: 18px;
-  background: rgba(255, 255, 255, 0.04);
-}
-
-.repo-dialog__metrics span {
-  color: var(--text-dim);
-  text-transform: uppercase;
-  letter-spacing: 0.14rem;
-  font-size: 0.74rem;
-}
-
-.repo-dialog__metrics strong {
-  font-family: var(--heading);
-  font-size: 1.5rem;
-  line-height: 1;
+.repo-dialog__block--updated .type-metric {
+  font-size: clamp(1.5rem, 2.5vw, 2.2rem);
+  line-height: 1.05;
+  text-wrap: balance;
 }
 
 @keyframes ticker {
@@ -785,14 +784,93 @@
     padding-top: 0;
   }
 
+  .hero__copy {
+    gap: 0.95rem;
+    padding: 1.15rem;
+  }
+
+  .hero__actions {
+    margin-top: 0.75rem;
+    inline-size: 100%;
+  }
+
+  .hero__cta--ghost {
+    flex: 0 1 auto;
+  }
+
+  .hero__ticker {
+    margin-top: 0.8rem;
+  }
+
+  .hero__status {
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .hero__status span {
+    padding: 0.34rem 0.56rem;
+  }
+
+  .hero__status .type-status {
+    font-size: 0.66rem;
+    letter-spacing: 0.06rem;
+  }
+
+  .hero__text {
+    inline-size: 100%;
+  }
+
+  .hero__title {
+    --type-title-size: clamp(1rem, 5.8vw, 1.5rem);
+    --type-title-line: 1.1;
+  }
+
+  .hero__copy h1 {
+    inline-size: 100%;
+    max-inline-size: 100%;
+    line-height: 1.1;
+  }
+
+  .hero__lead {
+    inline-size: 100%;
+  }
+
+  .hero__lede {
+    --type-body-size: 1rem;
+    --type-body-line: 1.46;
+  }
+
   .profile-card {
     grid-template-columns: 1fr;
+    grid-template-areas:
+      'avatar'
+      'headline'
+      'bio';
+  }
+
+  .hero__panel {
+    grid-template-rows: auto auto;
+  }
+
+  .type-metric--date {
+    font-size: clamp(1.45rem, 8.6vw, 1.95rem);
   }
 
   .metrics-grid,
   .repo-dialog__grid,
-  .repo-dialog__metrics {
+  .repo-dialog__meta-row {
     grid-template-columns: 1fr;
+  }
+
+  .metrics-grid {
+    grid-template-rows: auto;
+    min-height: auto;
+  }
+
+  .metric-card,
+  .metric-card--date {
+    height: auto;
+    min-height: 96px;
   }
 
   .projects-grid {
@@ -805,11 +883,12 @@
     min-height: 520px;
   }
 
-  .section-heading__text {
-    padding-top: 0;
+  .section-heading {
+    --section-copy-size: clamp(1.1rem, 5.6vw, 1.42rem);
+    padding: 1.2rem;
   }
 
-  .repo-dialog__block--metrics {
+  .repo-dialog__meta-row {
     grid-column: auto;
   }
 }

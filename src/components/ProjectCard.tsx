@@ -57,18 +57,18 @@ export function ProjectCard({ onInspect, repo }: ProjectCardProps) {
       style={{ '--project-accent': repo.accent } as CSSProperties}
     >
       <div className="project-card__visual" style={backdropStyle} />
-      <div className="project-card__inner">
+      <div className="project-card__inner type-block type-block--project">
         <div className="project-card__meta">
-          <span>{repo.category}</span>
-          <span>{formatDate(repo.updatedAt)}</span>
+          <span className="type-meta">{repo.category}</span>
+          <span className="type-meta">{formatDate(repo.updatedAt)}</span>
         </div>
 
         <div className="project-card__headline">
-          <p className="project-card__name">{repo.name}</p>
-          <h3>{repo.headline}</h3>
+          <p className="project-card__name type-kicker type-kicker--accent">{repo.name}</p>
+          <h3 className="type-title">{repo.headline}</h3>
         </div>
 
-        <p className="project-card__summary">{repo.summary}</p>
+        <p className="project-card__summary type-body">{repo.summary}</p>
 
         <ul className="project-card__highlights">
           {repo.highlights.slice(0, 3).map((highlight) => (
@@ -84,7 +84,7 @@ export function ProjectCard({ onInspect, repo }: ProjectCardProps) {
 
         <div className="project-card__footer">
           <div className="project-card__stack">
-            {repo.languages.slice(0, 4).map((language) => (
+            {repo.languages.slice(0, 5).map((language) => (
               <span key={`${repo.name}-${language}`}>{language}</span>
             ))}
           </div>

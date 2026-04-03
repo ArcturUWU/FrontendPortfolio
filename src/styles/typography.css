@@ -1,0 +1,232 @@
+/* Override these variables on each .type-block--* scope to retune fonts per block. */
+.type-block {
+  --type-font-kicker: var(--font-ui);
+  --type-font-title: var(--font-display);
+  --type-font-body: var(--font-body);
+  --type-font-label: var(--font-ui);
+  --type-font-meta: var(--font-ui);
+  --type-font-metric: var(--font-display);
+
+  --type-kicker-size: 0.82rem;
+  --type-kicker-track: 0.2rem;
+  --type-kicker-color: var(--accent-gold);
+
+  --type-title-size: clamp(2rem, 5vw, 4rem);
+  --type-title-weight: 400;
+  --type-title-line: 0.95;
+  --type-title-track: -0.04em;
+  --type-title-color: var(--text);
+  --type-title-max: none;
+  --type-title-wrap: balance;
+  --type-title-padding-inline-end: 0;
+
+  --type-body-size: 1rem;
+  --type-body-weight: 400;
+  --type-body-line: 1.65;
+  --type-body-color: var(--text-muted);
+  --type-body-max: none;
+  --type-body-wrap: pretty;
+
+  --type-label-size: 0.8rem;
+  --type-label-track: 0.12rem;
+  --type-label-color: var(--accent-red);
+
+  --type-meta-size: 0.78rem;
+  --type-meta-track: 0.1rem;
+  --type-meta-color: rgba(248, 239, 232, 0.84);
+
+  --type-metric-size: clamp(2rem, 4vw, 2.9rem);
+}
+
+.type-block--hero {
+  --type-font-kicker: var(--font-ui);
+  --type-font-title: var(--font-display);
+  --type-font-body: var(--font-body);
+  --type-title-size: clamp(1.7rem, 4.7vw, 3rem);
+  --type-title-line: 0.96;
+  --type-title-track: -0.03em;
+  --type-title-max: 100%;
+  --type-title-wrap: balance;
+  --type-title-padding-inline-end: 0;
+  --type-body-max: 34ch;
+  --type-body-line: 1.7;
+}
+
+.type-block--profile {
+  --type-font-kicker: var(--font-ui);
+  --type-font-title: var(--font-body);
+  --type-font-body: var(--font-body);
+  --type-title-size: clamp(2rem, 4vw, 3.2rem);
+  --type-title-weight: 800;
+  --type-title-line: 1;
+  --type-title-track: -0.05em;
+  --type-kicker-color: var(--text-dim);
+  --type-body-max: 26ch;
+  --type-body-line: 1.6;
+}
+
+.type-block--section {
+  --type-font-kicker: var(--font-ui);
+  --type-font-title: var(--font-display);
+  --type-font-body: var(--font-body);
+  --type-title-size: clamp(2.4rem, 5vw, 4.1rem);
+  --type-title-line: 0.94;
+}
+
+.type-block--manifest {
+  --type-font-label: var(--font-ui);
+  --type-font-title: var(--font-display);
+  --type-font-body: var(--font-body);
+  --type-title-size: 2rem;
+  --type-title-line: 1;
+  --type-title-track: -0.05em;
+}
+
+.type-block--project {
+  --type-font-kicker: var(--font-ui);
+  --type-font-title: var(--font-display);
+  --type-font-body: var(--font-body);
+  --type-font-meta: var(--font-ui);
+  --type-title-size: clamp(2rem, 4vw, 3rem);
+  --type-title-line: 0.96;
+  --type-title-track: -0.06em;
+  --type-body-max: 44ch;
+  --type-body-color: rgba(248, 239, 232, 0.82);
+}
+
+.type-block--dialog {
+  --type-font-kicker: var(--font-ui);
+  --type-font-title: var(--font-display);
+  --type-font-body: var(--font-body);
+  --type-font-label: var(--font-ui);
+  --type-title-size: clamp(2rem, 4vw, 3rem);
+  --type-title-line: 0.96;
+  --type-body-max: 40ch;
+}
+
+.type-block--metric {
+  --type-font-label: var(--font-ui);
+  --type-font-metric: var(--font-display);
+  --type-label-size: 0.8rem;
+  --type-label-track: 0.1rem;
+  --type-label-color: var(--text-dim);
+}
+
+.type-brandline {
+  display: block;
+  font-family: var(--font-ui);
+  text-transform: uppercase;
+}
+
+.type-brandline--primary {
+  font-size: 0.82rem;
+  letter-spacing: 0.28rem;
+  color: var(--accent-gold);
+}
+
+.type-brandline--secondary {
+  font-size: 0.74rem;
+  letter-spacing: 0.16rem;
+  color: var(--text-dim);
+}
+
+.type-status {
+  font-family: var(--font-ui);
+  font-size: 0.8rem;
+  letter-spacing: 0.1rem;
+  text-transform: uppercase;
+}
+
+.type-kicker {
+  display: block;
+  font-family: var(--type-font-kicker);
+  font-size: var(--type-kicker-size);
+  letter-spacing: var(--type-kicker-track);
+  text-transform: uppercase;
+  color: var(--type-kicker-color);
+}
+
+.type-kicker--accent {
+  color: var(--project-accent, var(--accent-gold));
+}
+
+.type-title {
+  display: block;
+  max-inline-size: var(--type-title-max);
+  padding-inline-end: var(--type-title-padding-inline-end);
+  font-family: var(--type-font-title);
+  font-size: var(--type-title-size);
+  font-weight: var(--type-title-weight);
+  line-height: var(--type-title-line);
+  letter-spacing: var(--type-title-track);
+  color: var(--type-title-color);
+  text-wrap: var(--type-title-wrap);
+}
+
+.type-body {
+  display: block;
+  max-inline-size: var(--type-body-max);
+  font-family: var(--type-font-body);
+  font-size: var(--type-body-size);
+  font-weight: var(--type-body-weight);
+  line-height: var(--type-body-line);
+  color: var(--type-body-color);
+  text-wrap: var(--type-body-wrap);
+}
+
+.type-body--primary {
+  color: var(--text);
+}
+
+.type-body--measure-wide {
+  max-inline-size: 42ch;
+}
+
+.type-label {
+  display: inline-block;
+  font-family: var(--type-font-label);
+  font-size: var(--type-label-size);
+  letter-spacing: var(--type-label-track);
+  text-transform: uppercase;
+  color: var(--type-label-color);
+}
+
+.type-label--muted {
+  color: var(--text-dim);
+}
+
+.type-meta {
+  font-family: var(--type-font-meta);
+  font-size: var(--type-meta-size);
+  letter-spacing: var(--type-meta-track);
+  text-transform: uppercase;
+  color: var(--type-meta-color);
+}
+
+.type-metric {
+  font-family: var(--type-font-metric);
+  font-size: var(--type-metric-size);
+  line-height: 1;
+  color: var(--text);
+}
+
+@media (max-width: 1080px) {
+  .type-block--hero {
+    --type-title-size: clamp(1.65rem, 4.8vw, 2.9rem);
+  }
+}
+
+@media (max-width: 720px) {
+  .type-block--hero {
+    --type-title-size: clamp(1.45rem, 6.8vw, 2.15rem);
+    --type-title-line: 0.98;
+    --type-body-size: 0.96rem;
+    --type-body-max: none;
+  }
+
+  .type-block--hero,
+  .type-block--section,
+  .type-block--dialog {
+    --type-title-track: -0.03em;
+  }
+}

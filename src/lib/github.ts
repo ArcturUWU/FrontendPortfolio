@@ -6,6 +6,10 @@ const API_HEADERS = {
 }
 
 const LOGIN = 'QweeeTleX'
+const repoLanguageOverrides: Record<string, string[]> = {
+  Tea_project: ['React', 'TypeScript', 'JavaScript', 'CSS', 'HTML'],
+  Chatbot: ['React', 'JavaScript', 'CSS', 'HTML'],
+}
 
 type GitHubProfile = {
   avatar_url: string
@@ -241,6 +245,8 @@ function buildRepo(
     parsed?.previewUrl ??
     `https://opengraph.githubassets.com/1/${repo.full_name}`
 
+  const normalizedLanguages = repoLanguageOverrides[repo.name] ?? languages
+
   return {
     accent: narrative.accent,
     bullets: parsed?.bullets ?? [],
@@ -254,7 +260,7 @@ function buildRepo(
     homepage: repo.homepage,
     htmlUrl: repo.html_url,
     language: repo.language,
-    languages,
+    languages: normalizedLanguages,
     name: repo.name,
     previewUrl,
     pushedAt: repo.pushed_at,
