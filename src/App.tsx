@@ -5,7 +5,7 @@ import { PlasmaCanvas } from './components/PlasmaCanvas'
 import { ProjectCard } from './components/ProjectCard'
 import { RepoDialog } from './components/RepoDialog'
 import { useGithubPortfolio } from './hooks/useGithubPortfolio'
-import { formatDate, formatMonthYear } from './lib/format'
+import { formatDate, formatDateMetric } from './lib/format'
 import type { PortfolioRepo } from './types'
 
 function App() {
@@ -24,16 +24,26 @@ function App() {
     return Array.from(languageSet)
   }, [portfolio.repos])
 
-  const livePieces = useMemo(() => {
-    const pieces = [...languageCloud]
-    if (pieces.length === 0) {
-      return ['React', 'JavaScript', 'CSS', 'GitHub', 'Canvas', 'Vite']
+  const displayLanguages = useMemo(() => {
+    const excludedFromUi = new Set(['python', 'ruby', 'shell'])
+    const filtered = languageCloud.filter(
+      (language) => !excludedFromUi.has(language.toLowerCase()),
+    )
+
+    if (filtered.length === 0) {
+      return ['React', 'TypeScript', 'JavaScript', 'CSS', 'GitHub', 'Vite']
     }
 
-    return [...pieces, ...pieces]
+    return Array.from(new Set(['React', 'TypeScript', ...filtered]))
   }, [languageCloud])
 
+  const livePieces = useMemo(() => {
+    return [...displayLanguages, ...displayLanguages]
+  }, [displayLanguages])
+
+  const githubSinceYear = new Date(portfolio.profile.createdAt).getUTCFullYear()
   const freshestRepo = portfolio.repos[0]
+  const syncMetric = formatDateMetric(portfolio.syncedAt)
   const sourceLabel = {
     cache: 'cached snapshot',
     fallback: 'fallback snapshot',
@@ -53,8 +63,10 @@ function App() {
 
       <header className="topbar">
         <div className="topbar__brand">
-          <span>CTRL COUTURE</span>
-          <span>QweeeTleX / frontend runway</span>
+          <span className="type-brandline type-brandline--primary">CTRL COUTURE</span>
+          <span className="type-brandline type-brandline--secondary">
+            QweeeTleX / frontend engineer
+          </span>
         </div>
 
         <nav className="topbar__nav" aria-label="Навигация по странице">
@@ -68,23 +80,25 @@ function App() {
 
       <main className="content-shell">
         <section className="hero">
-          <div className="hero__copy">
-            <div className="hero__status">
-              <span>digital runway / source linked</span>
-              <span data-tone={sourceTone}>{sourceLabel}</span>
-            </div>
+          <div className="hero__copy type-block type-block--hero">
+            <div className="hero__lead">
+              <div className="hero__status">
+                <span className="type-status">frontend engineer / source linked</span>
+                <span className="type-status" data-tone={sourceTone}>
+                  {sourceLabel}
+                </span>
+              </div>
 
-            <p className="hero__eyebrow">Bold frontend portfolio with live GitHub ingestion.</p>
-            <h1>
-              Интерфейсы здесь подаются как кампания,
-              <br />
-              а вскрываются до исходников.
-            </h1>
-            <p className="hero__lede">
-              Портфолио собрано вокруг реальных репозиториев QweeeTleX: данные тянутся с GitHub,
-              проекты раскрываются в `dossier`-режиме, а визуал строится как digital fashion show
-              с редакционной типографикой, атмосферным canvas-фоном и нарочито дерзкой подачей.
-            </p>
+              <div className="hero__text">
+                <p className="hero__eyebrow type-kicker">
+                  React 19, TypeScript, API integration, UI engineering.
+                </p>
+                <p className="hero__lede type-body">
+                  Я frontend-разработчик. Работаю с React 19, TypeScript, Vite, API-интеграциями,
+                  адаптивной версткой, дизайн-системным подходом и интерактивной графикой на canvas.
+                </p>
+              </div>
+            </div>
 
             <div className="hero__actions">
               <a className="hero__cta hero__cta--solid" href="#projects">
@@ -110,7 +124,7 @@ function App() {
           </div>
 
           <aside className="hero__panel">
-            <div className="profile-card">
+            <div className="profile-card type-block type-block--profile">
               <div className="profile-card__avatar-wrap">
                 <img
                   alt={`${portfolio.profile.login} avatar`}
@@ -119,75 +133,75 @@ function App() {
                 />
               </div>
 
-              <div className="profile-card__identity">
-                <p className="profile-card__eyebrow">GitHub profile</p>
-                <h2>{portfolio.profile.login}</h2>
-                <p>
-                  На GitHub с {formatMonthYear(portfolio.profile.createdAt)}. Портфолио не имитирует
-                  активность, а забирает её из реальных репозиториев и README.
-                </p>
+              <div className="profile-card__headline">
+                <p className="profile-card__eyebrow type-kicker">GitHub profile</p>
+                <h2 className="type-title">{portfolio.profile.login}</h2>
               </div>
+
+              <p className="profile-card__bio type-body">
+                На GitHub с {githubSinceYear} года. Здесь мои реальные
+                проекты: по ним видно, как я проектирую UI, работаю с данными и довожу фичи до
+                рабочего состояния.
+              </p>
             </div>
 
             <div className="metrics-grid">
-              <article className="metric-card">
-                <span>Repos</span>
-                <strong>{portfolio.profile.publicRepos.toString().padStart(2, '0')}</strong>
+              <article className="metric-card metric-card--date type-block type-block--metric">
+                <span className="type-label type-label--muted">Repos</span>
+                <strong className="type-metric">
+                  {portfolio.profile.publicRepos.toString().padStart(2, '0')}
+                </strong>
               </article>
-              <article className="metric-card">
-                <span>Stack nodes</span>
-                <strong>{languageCloud.length.toString().padStart(2, '0')}</strong>
-              </article>
-              <article className="metric-card">
-                <span>Latest drop</span>
-                <strong>{freshestRepo ? formatDate(freshestRepo.updatedAt) : 'syncing'}</strong>
-              </article>
-              <article className="metric-card">
-                <span>Sync</span>
-                <strong>{formatDate(portfolio.syncedAt)}</strong>
+              <article className="metric-card metric-card--date type-block type-block--metric">
+                <span className="type-label type-label--muted">Sync</span>
+                <strong
+                  aria-label={formatDate(portfolio.syncedAt)}
+                  className="type-metric type-metric--date"
+                >
+                  <span>{syncMetric.dayMonth}</span>
+                  <span>{syncMetric.year}</span>
+                </strong>
               </article>
             </div>
           </aside>
         </section>
 
         <section className="manifest">
-          <article className="manifest-card">
-            <p>01 / live ingestion</p>
-            <h3>Проекты не вбиты вручную.</h3>
-            <p>
-              Репозитории, стек, README-заметки и структура директорий подтягиваются из GitHub API,
-              а при rate-limit включается локальный fallback-кэш.
+          <article className="manifest-card type-block type-block--manifest">
+            <p className="type-label">01 / data & integration</p>
+            <h3 className="type-title">Работаю с API, кэшем и обработкой ошибок.</h3>
+            <p className="type-body">
+              В Weather использую Open-Meteo API, в этом сайте — загрузку данных из GitHub и
+              fallback-кэш. Данные проходят нормализацию перед выводом в интерфейс.
             </p>
           </article>
 
-          <article className="manifest-card">
-            <p>02 / visual aggression</p>
-            <h3>Сайт выглядит как digital editorial.</h3>
-            <p>
-              Выразительная Bodoni-типографика, плотные градиенты, стеклянные панели и живая
-              canvas-плазма вместо стерильного “просто лендинга”.
+          <article className="manifest-card type-block type-block--manifest">
+            <p className="type-label">02 / ui & product flows</p>
+            <h3 className="type-title">Собираю интерфейсы под разные пользовательские сценарии.</h3>
+            <p className="type-body">
+              Chatbot: потоковые ответы и управление чатами; Tea_project: каталог, авторизация и
+              роли; Vahta: рабочий график и подработки.
             </p>
           </article>
 
-          <article className="manifest-card">
-            <p>03 / source-first</p>
-            <h3>Каждый кейс можно вскрыть.</h3>
-            <p>
-              У каждой карточки есть выход в GitHub, а `Dossier` показывает стек, README-выжимку,
-              структуру репозитория и проектные акценты.
+          <article className="manifest-card type-block type-block--manifest">
+            <p className="type-label">03 / source & delivery</p>
+            <h3 className="type-title">Каждый кейс подтвержден исходниками и историей коммитов.</h3>
+            <p className="type-body">
+              В карточках доступны репозиторий, README, стек, структура файлов и даты обновлений.
             </p>
           </article>
         </section>
 
-        <section className="section-heading" id="projects">
-          <div>
-            <p className="section-heading__eyebrow">Projects / runway selection</p>
-            <h2>Отобранные работы, привязанные к живому GitHub-слою.</h2>
+        <section className="section-heading type-block type-block--section" id="projects">
+          <div className="section-heading__copy">
+            <p className="section-heading__eyebrow type-kicker">Projects / runway selection</p>
+            <h2 className="type-title">
+              Проекты, в которых видны мои прикладные навыки: ниже 4 кейса с разной предметной
+              логикой, и в каждом показаны задача, ключевые решения, стек и ссылка на исходники.
+            </h2>
           </div>
-          <p className="section-heading__text">
-            Не “галерея картинок”, а набор интерфейсных выходов: от стримингового чата и tea
-            commerce stack до weather experience и утилитарного графика смен.
-          </p>
         </section>
 
         <section className="projects-grid">
@@ -197,37 +211,43 @@ function App() {
         </section>
 
         <section className="system-section" id="system">
-          <div className="system-section__copy">
-            <p className="section-heading__eyebrow">System / build logic</p>
-            <h2>Почему этот формат сильнее обычного портфолио.</h2>
-            <p>
-              Здесь сам сайт демонстрирует frontend-мышление: есть клиентский data layer, локальный
-              cache, graceful fallback, motion without library bloat и гибкая презентация для
-              проектов разной природы.
+          <div className="system-section__copy type-block type-block--section">
+            <p className="section-heading__eyebrow type-kicker">Engineering / build logic</p>
+            <h2 className="type-title">Как я проектирую frontend-решения.</h2>
+            <p className="type-body type-body--measure-wide system-section__answer">
+              Начинаю с задачи и пользовательского сценария: фиксирую входные данные, состояния
+              интерфейса и условия ошибок. Затем собираю экран модульно, добавляю fallback-поведение
+              и проверяю, что решение стабильно работает с реальными API и в адаптивной верстке.
             </p>
           </div>
 
           <div className="system-section__panel">
             <div className="system-section__list">
               <article>
-                <span>data</span>
-                <p>GitHub REST API, README parsing, localStorage cache, live/fallback status.</p>
+                <span className="type-label">data</span>
+                <p className="type-body">
+                  GitHub REST API, нормализация данных, парсинг README, localStorage cache,
+                  fallback-стратегии.
+                </p>
               </article>
               <article>
-                <span>motion</span>
-                <p>Canvas plasma, CSS-driven editorial transitions, tilt cards and modal dossiers.</p>
+                <span className="type-label">motion</span>
+                <p className="type-body">
+                  Canvas, CSS transitions, композиция экранов и микро-взаимодействия без лишних
+                  библиотек.
+                </p>
               </article>
               <article>
-                <span>stack</span>
-                <p>
-                  React 19 + TypeScript + Vite. Без лишних UI-библиотек, чтобы стиль был
-                  собственным, а не шаблонным.
+                <span className="type-label">stack</span>
+                <p className="type-body">
+                  React 19, TypeScript, Vite, модульная структура компонентов и читаемый CSS для
+                  быстрой поддержки.
                 </p>
               </article>
             </div>
 
             <div className="stack-cloud">
-              {languageCloud.map((language) => (
+              {displayLanguages.map((language) => (
                 <span key={language}>{language}</span>
               ))}
             </div>
@@ -235,7 +255,7 @@ function App() {
         </section>
 
         {portfolio.errorMessage ? (
-          <p className="status-note">
+          <p className="status-note type-body">
             GitHub sync warning: {portfolio.errorMessage}. Интерфейс продолжает работу на cached or
             fallback snapshot.
           </p>
@@ -244,7 +264,7 @@ function App() {
 
       <footer className="footer">
         <p>
-          QweeeTleX portfolio experience. Latest visible repo:{' '}
+          QweeeTleX, frontend developer. Последний обновленный репозиторий:{' '}
           <strong>{freshestRepo?.name ?? 'syncing'}</strong>.
         </p>
         <a href={portfolio.profile.htmlUrl} rel="noreferrer" target="_blank">

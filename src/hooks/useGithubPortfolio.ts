@@ -4,7 +4,7 @@ import { fallbackPortfolio } from '../data/fallbackPortfolio'
 import { fetchGitHubPortfolio } from '../lib/github'
 import type { PortfolioSnapshot, PortfolioState } from '../types'
 
-const CACHE_KEY = 'qweeetlex-portfolio-cache-v1'
+const CACHE_KEY = 'qweeetlex-portfolio-cache-v3'
 const CACHE_TTL = 1000 * 60 * 20
 
 type CachePayload = {
